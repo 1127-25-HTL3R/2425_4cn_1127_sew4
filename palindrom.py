@@ -22,10 +22,7 @@ def is_palindrome(s: str):
 def is_palindrome_sentence(s: str) -> bool:
     """
     Checks is the string s, which may contain a sentence, is a
-    palindrome
-    sentence.
-
-    >>> is_palindrome_sentence("Was it a car or a cat I saw?")
+    palindrome sentence. >>> is_palindrome_sentence("Was it a car or a cat I saw?")
     True
 
     >>> is_palindrome_sentence("Do Geese see God?")
@@ -114,15 +111,17 @@ def get_dec_hex_palindrome(x):
     :param x: Upper limit
     :return: The largest hexadecimal and decimal palindrome less than x
 
-    >>> get_dec_hex_palindrome(1000)
-    585
-    >>> get_dec_hex_palindrome(600)
-    585
-    >>> get_dec_hex_palindrome(500)
-    494
+    >>> get_dec_hex_palindrome(700)
+    626
+    >>> get_dec_hex_palindrome(1500)
+    979
     """
-    for num in range(x - 1, 0, -1):
-        dec_palindrome = is_palindrome(str(num))
-        hex_palindrome = is_palindrome(to_base(num, 16).upper())
-        if dec_palindrome and hex_palindrome:
-            return num
+    largest_palindrome = 0
+
+    for num in range(0, x):
+        decimal_str = str(num)
+        hex_str = to_base(num, 16).upper()
+        if is_palindrome(decimal_str) and is_palindrome(hex_str):
+            largest_palindrome = num
+
+    return largest_palindrome
