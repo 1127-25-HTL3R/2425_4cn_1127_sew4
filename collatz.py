@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 __author__ = "Felix Friesenbichler"
 __email__ = "1127@htl.rennweg.at"
 __license__ = "GPLv2"
@@ -19,7 +21,7 @@ def collatz(n: int) -> int:
     else:
         return 3 * n + 1
 
-def collatz_sequence(number:int):
+def collatz_sequence(number:int) -> List[int]:
     """
     Calculates the collatz sequence beginning with number.
 
@@ -40,3 +42,27 @@ def collatz_sequence(number:int):
         next_number = 3 * number + 1
 
     return [number] + collatz_sequence(next_number)
+
+
+def longest_collatz_sequence(n: int) -> Tuple[int, int]:
+    """
+    Finds the longest collatz sequence starting with n
+
+    :param n: The cap for the starting value of the collatz sequence
+    :return: Starting value and length of the longest collatz sequence beginning with n
+    >>> longest_collatz_sequence(100)
+    (97, 119)
+    >>> longest_collatz_sequence(20)
+    (18, 21)
+    """
+
+    max_length = 0
+    start_number = 0
+
+    for i in range(1, n+1):
+        length = len(collatz_sequence(i))
+        if length > max_length:
+            max_length = length
+            start_number = i
+
+    return (start_number, max_length)
