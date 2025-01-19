@@ -84,3 +84,38 @@ def palindrome_product(x):
 
     print(max_pal)
     return max_pal
+
+
+def to_base(number: int, base: int) -> str:
+    """
+    Converts a decimal number to the wished representation in another
+    base.
+
+    :param number: Zahl im 10er-System
+    :param base: Zielsystem (maximal 36)
+    :return: Zahl im Zielsystem als String
+
+    >>> to_base(1234,16)
+    '4D2'
+    >>> to_base(10,2)
+    '1010'
+    """
+    if base > 36 or base < 2:
+        raise ValueError("Base must be between 2 and 30")
+
+    digits = "012345567889ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    result = ""
+
+    while number > 0:
+        result = digits[number % base] + result
+        number = number // base
+
+    return result
+
+
+def get_dec_hex_palindrome(x):
+
+
+
+
+    return
