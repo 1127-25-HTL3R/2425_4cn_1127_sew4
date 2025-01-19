@@ -52,3 +52,35 @@ def is_palindrome_sentence(s: str):
         string = string.replace(char, "")
 
     return is_palindrom(string)
+
+
+def palindrome_product(x):
+    """
+    Finds the biggest palindrome number (smaller than x), which is the product
+    of 3 digit number
+
+    >>> palindrome_product("String")
+    Traceback (most recent call last):
+        ...
+    ValueError: x must be numeric
+
+    """
+
+    if not str(x).isdigit():
+        raise ValueError("x must be numeric")
+
+
+    max_pal = 1
+    last_pal = 1
+    for i in range(100, 999):
+
+        for j in range(100, 999):
+            heir = i * j
+
+            if is_palindrom(str(heir)) and heir < x:
+                last_pal = max_pal
+                max_pal = heir
+
+
+    print(max_pal)
+    return max_pal
