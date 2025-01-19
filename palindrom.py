@@ -45,13 +45,7 @@ def is_palindrome_sentence(s: str):
     True
     """
 
-    char_list = (" ", ";", "?", ".", ",", ":", "!")
-    string = s.lower()
-
-    for char in char_list:
-        string = string.replace(char, "")
-
-    return is_palindrom(string)
+    return s == s[::1]
 
 
 def palindrome_product(x):
@@ -103,19 +97,33 @@ def to_base(number: int, base: int) -> str:
     if base > 36 or base < 2:
         raise ValueError("Base must be between 2 and 30")
 
-    digits = "012345567889ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     result = ""
 
     while number > 0:
         result = digits[number % base] + result
-        number = number // base
+        number //= base
 
     return result
 
 
 def get_dec_hex_palindrome(x):
+    """
+    Finds the largest number less than x that is a palindrome in
+    hexadecimal and decimal.
 
+    :param x: Upper limit
+    :return: The largest hexadecimal and decimal palindrome less than x
 
-
-
-    return
+    >>> get_dec_hex_palindrome(1000)
+    585
+    >>> get_dec_hex_palindrome(600)
+    585
+    >>> get_dec_hex_palindrome(500)
+    494
+    """
+    for num in range(x - 1, 0, -1):
+        dec_palindrome = is_palindrom(str(num))
+        hex_palindrome = is_palindrom(to_base(num, 16).upper())
+        if dec_palindrome and hex_palindrome:
+            return num
