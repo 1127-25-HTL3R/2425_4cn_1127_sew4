@@ -18,3 +18,25 @@ def collatz(n: int) -> int:
         return n // 2
     else:
         return 3 * n + 1
+
+def collatz_sequence(number:int):
+    """
+    Calculates the collatz sequence beginning with number.
+
+    :param number: The beginning number for the sequence.
+    :return: A list containing the calculated sequence.
+
+    >>> collatz_sequence(19)
+    [19, 58, 29, 88, 44, 22, 11, 34, 17, 52, 26, 13, 40, 20, 10, 5, 16, 8, 4, 2, 1]
+    >>> collatz_sequence(20)
+    [20, 10, 5, 16, 8, 4, 2, 1]
+    """
+    if number == 1:
+        return [1]
+
+    if number % 2 == 0:
+        next_number = number // 2
+    else:
+        next_number = 3 * number + 1
+
+    return [number] + collatz_sequence(next_number)
