@@ -4,7 +4,7 @@ __email__ = "1127@htl.rennweg.at"
 __license__ = "GPLv2"
 
 import re
-from typing import List, Set
+from typing import List, Set, Tuple
 from collections import Counter
 
 
@@ -258,7 +258,8 @@ class Kasiski:
 
     def alldist(self, text: str, teilstring: str) -> Set[int]:
         """
-        Berechnet die Abstände zwischen allen Vorkommnissen des Teilstrings im verschlüsselten Text.
+        Berechnet die Abstände zwischen allen Vorkommnissen des Teilstrings im
+        verschlüsselten Text.
 
         :param text: Der Text, in welchem die Abstände gesucht werden sollen.
         :param teilstring: Der Teilstring, wo die Abstände zwischeneinander gezählt werden sollen.
@@ -281,5 +282,45 @@ class Kasiski:
         for i in range(len(positions)):
             for j in range(i + 1, len(positions)):
                 distances.add(positions[j] - positions[i])
+
+        return distances
+
+    def dist_n_tuple(self, text: str, laenge: int) -> Set[Tuple[str, int]]:
+        """
+        Überprüft alle Teilstrings aus text mit der gegebenen laenge und
+        liefert ein Set mit den Abständen aller Wiederholunghen der Teilstrings
+        in text.
+
+        >>> k = Kasiski()
+        >>> k.dist_n_tuple("heissajuchei", 2) == {('ei', 9), ('he', 9)}
+        True
+        >>> k.dist_n_tuple("heissajuchei", 3) == {('hei', 9)}
+        True
+        >>> k.dist_n_tuple("heissajuchei", 4) == set()
+        True
+        >>> k.dist_n_tuple("heissajucheieinei", 2) == \
+            {('ei', 5), ('ei', 14), ('ei', 3), ('ei', 9), ('ei', 11), ('he', 9), ('ei', 2)}
+        True
+        """
+        substring_positions = {}
+
+        # Durchlaufe den Text und extrahiere alle Teilstrings der angegebenen Länge
+        for i in range(len(text) - laenge + 1):
+            substring = text[i:i + laenge]
+
+            # Füge die Position des Teilstrings zur Liste der Positionen hinzu
+            if substring not in substring_positions:
+                substring_positions[substring] = []
+            substring_positions[substring].append(i)
+
+        # Berechne die Abstände zwischen allen Vorkommnissen von Teilstrings, die mehr als einmal vorkommen
+        distances = set()
+
+        for substring, positions in substring_positions.items():
+            if len(positions) > 1:
+                # Berechne die Abstände zwischen allen Positionen für den aktuellen Teilstring
+                for i in range(len(positions)):
+                    for j in range(i + 1, len(positions)):
+                        distances.add((substring, positions[j] - positions[i]))
 
         return distances
