@@ -4,6 +4,8 @@ __email__ = "1127@htl.rennweg.at"
 __license__ = "GPLv2"
 
 import re
+from typing import List
+from collections import Counter
 
 
 class Caesar:
@@ -56,8 +58,6 @@ class Caesar:
         shift = alphabet.index(key.lower()) if key else alphabet.index(self.key)
         return "".join(alphabet[(alphabet.index(char) + shift) % 26] for char in plaintext)
 
-
-
     def decrypt(crypttext: str, key: str = None) -> str:
         """
         Entschlüsselt einen Text nach Caesar-Chiffre mit dem key.
@@ -73,6 +73,9 @@ class Caesar:
         >>> caesar.decrypt("ibmmp")
         'hallo'
         """
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        shift = alphabet.index(key.lower()) if key else alphabet.index(self.key)
+        return "".join(alphabet[(alphabet.index(char) - shift) % 26] for char in crypttext)
 
     def crack(crypttext: str, elements: int = 1) -> List[str]:
         """
@@ -100,3 +103,15 @@ wir unsere armen Kinder ernähren da wir für uns selbst nichts mehr haben?"'
         >>> caesar.crack(crypted, 3)
         ['y', 'h', 'l']
         """
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        frequency_order = "enistardulcgmobwfkzvphjyxq"
+
+        letter_counts = Counter(crypttext)
+        most_common_letter = letter_counts.most_common(1)[0][0]
+
+        probable_keys = []
+        for frequent_letter in frequency_order:
+            shift = (alphabet.index(most_common_letter) - alphabet.index(frequent_letter)) % 26
+            probable_keys.append(alphabet[shift])
+
+        return probable_keys[:min(elements, 26)]
