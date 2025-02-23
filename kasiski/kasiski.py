@@ -52,6 +52,11 @@ class Caesar:
         >>> caesar.encrypt("xyz", "c"
         'zab'
         """
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        shift = alphabet.index(key.lower()) if key else alphabet.index(self.key)
+        return "".join(alphabet[(alphabet.index(char) + shift) % 26] for char in plaintext)
+
+
 
     def decrypt(crypttext: str, key: str = None) -> str:
         """
