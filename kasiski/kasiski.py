@@ -9,7 +9,7 @@ from collections import Counter
 
 
 class Caesar:
-    def __init__(self, key: str) -> None:
+    def __init__(self, key: str="e") -> None:
         """
         Initialisiert den Caesar-Chiffre mit einem Schlüssel (key).
 
@@ -31,7 +31,7 @@ class Caesar:
         """
         return "".join(re.findall(r'[a-z]', plaintext.lower()))
 
-    def encrypt(plaintext: str, key: str = None) -> str:
+    def encrypt(self, plaintext: str, key: str = None) -> str:
         """
         Key ist ein Buchstabe, der definiert, um wieviele Zeichen verschoben
         wird. Falls kein key übergeben wird, nimmt encrypt den Wert von
@@ -51,15 +51,16 @@ class Caesar:
         'ibmmp'
         >>> caesar.encrypt("hallo", "c")
         'jcnnq'
-        >>> caesar.encrypt("xyz", "c"
+        >>> caesar.encrypt("xyz", "c")
         'zab'
         """
+        plaintext = self.to_lowercase_letter_only(plaintext)
         alphabet = "abcdefghijklmnopqrstuvwxyz"
         shift = alphabet.index(
             key.lower()) if key else alphabet.index(self.key)
         return "".join(alphabet[(alphabet.index(char) + shift) % 26] for char in plaintext)
 
-    def decrypt(crypttext: str, key: str = None) -> str:
+    def decrypt(self, crypttext: str, key: str = None) -> str:
         """
         Entschlüsselt einen Text nach Caesar-Chiffre mit dem key.
 
@@ -79,7 +80,7 @@ class Caesar:
             key.lower()) if key else alphabet.index(self.key)
         return "".join(alphabet[(alphabet.index(char) - shift) % 26] for char in crypttext)
 
-    def crack(crypttext: str, elements: int = 1) -> List[str]:
+    def crack(self, crypttext: str, elements: int = 1) -> List[str]:
         """
         Berechnet eine Liste mit den wahrscheinlichsten Schlüsseln. Die Länge
         der Liste wird mit elements vorgegeben.
@@ -89,22 +90,17 @@ class Caesar:
 
         :return: Eine Liste mit den wahrscheinlichsten Schlüsseln.
 
-        >>>str='Vor einem großen Walde wohnte ein armer Holzhacker mit seiner Frau und seinen
-zwei Kindern; das Bübchen hieß Hänsel und das Mädchen Gretel. Er hatte wenig zu beißen
-und zu brechen, und einmal, als große Teuerung ins Land kam, konnte er das tägliche Brot
-nicht mehr schaffen. Wie er sich nun abends im Bette Gedanken machte und sich vor Sorgen
-herumwälzte, seufzte er und sprach zu seiner Frau: "Was soll aus uns werden? Wie können
-wir unsere armen Kinder ernähren da wir für uns selbst nichts mehr haben?"'
+        >>> message='Vor einem großen Walde wohnte ein armer Holzhacker mit seiner Frau und seinen zwei Kindern; das Bübchen hieß Hänsel und das Mädchen Gretel. Er hatte wenig zu beißen und zu brechen, und einmal, als große Teuerung ins Land kam, konnte er das tägliche Brot nicht mehr schaffen. Wie er sich nun abends im Bette Gedanken machte und sich vor Sorgen herumwälzte, seufzte er und sprach zu seiner Frau: "Was soll aus uns werden? Wie können wir unsere armen Kinder ernähren da wir für uns selbst nichts mehr haben?"'
         >>> caesar = Caesar()
-        >>> caesar.crack(str)
+        >>> caesar.crack(message)
         ['a']
-        >>> caesar.crack(str, 100) # mehr als 26 können es nicht sein.
-        ['a', 'j', 'n', 'o', 'e', 'w', 'd', 'q', 'z', 'p', 'i', 'h', 'y', 's', 'k', 'x', 'c',
-'v', 'g', 'b', 'r', 'l']
-        >>> crypted = caesar.encrypt(str, "y")
+        >>> caesar.crack(message, 100) # mehr als 26 können es nicht sein.
+        ['a', 'r', 'w', 'm', 'l', 'e', 'n', 'b', 'k', 't', 'c', 'y', 's', 'q', 'd', 'i', 'z', 'u', 'f', 'j', 'p', 'x', 'v', 'g', 'h', 'o']
+        >>> crypted=caesar.encrypt(message, "y")
         >>> caesar.crack(crypted, 3)
-        ['y', 'h', 'l']
+        ['y', 'p', 'u']
         """
+        crypttext = self.to_lowercase_letter_only(crypttext)
         alphabet = "abcdefghijklmnopqrstuvwxyz"
         frequency_order = "enistardulcgmobwfkzvphjyxq"
 
@@ -122,7 +118,7 @@ wir unsere armen Kinder ernähren da wir für uns selbst nichts mehr haben?"'
 
 class Vigenere:
 
-    def __init__(self, key: str) -> None:
+    def __init__(self, key: str = "a") -> None:
         """
         Initialisiert den Caesar-Chiffre mit einem Schlüssel (key).
 
@@ -130,7 +126,7 @@ class Vigenere:
         """
         self.key = key
 
-    def to_lower_case_letter_only(plaintext: str) -> str:
+    def to_lowercase_letter_only(self, plaintext: str) -> str:
         """
         Wandelt den plaintext in Kleinbuchstaben um und entfernt alle Zeichen,
         die keine Kleinbuchstaben aus dem Bereich [a..z] sind.
@@ -139,18 +135,31 @@ class Vigenere:
         :return: Bereinigter Text nur mit Kleinbuchstaben von a-z.
 
         >>> vigenere = Vigenere()
-        >>> Vigenere.to_lowercase_letter_only("Wandelt den plaintext in Kleinbuchstaben um und entfernt alle Zeichen, die keine Kleinbuchstaben aus dem Bereich [a..z] sind.")
+        >>> vigenere.to_lowercase_letter_only("Wandelt den plaintext in Kleinbuchstaben um und entfernt alle Zeichen, die keine Kleinbuchstaben aus dem Bereich [a..z] sind.")
         'wandeltdenplaintextinkleinbuchstabenumundentferntallezeichendiekeinekleinbuchstabenausdembereichazsind'
         """
-        return Caesar.to_lowercase_letter_only(plaintext)
+        c = Caesar()
+        return c.to_lowercase_letter_only(plaintext)
 
-    def encrypt(plaintext: str, key: str = None) -> str:
+    def encrypt(self, plaintext: str, key: str = None) -> str:
         """
         Verschlüsselt den eingegebnen Text mit dem Vigenere-Verfahren.
         Wenn kein Schlüssel angegeben wird, wird der Property Schlüssel verwedenet.
+
+        :param plaintext: Der Klartext, der verschlüsselt werden soll.
+        :param key: Der Schlüssel, der für die Verschlüsselung verwendet wird.
+
+        :return: Der verschlüsselte Text.
+
+        >>> vigenere = Vigenere(key="abc")
+        >>> vigenere.encrypt("hello world")
+        'hfnlpyosnd'
+
+        >>> vigenere.encrypt("world hello", key="cba")
+        'yprnehgmlq'
         """
-        plaintext = Vigenere.to_lower_case_letter_only(plaintext)
-        key = key if key else Vigenere.key
+        plaintext = self.to_lowercase_letter_only(plaintext)
+        key = key if key else self.key
 
         alphabet = "abcdefghijklmnopqrstuvwxyz"
         ciphertext = []
@@ -166,16 +175,29 @@ class Vigenere:
             ciphertext.append(encrypted_char)
             key_index += 1
 
-        return "".join(cipertext)
+        return "".join(ciphertext)
 
-    def decrypt(ciphertext: str, key: str = None) -> str:
+    def decrypt(self, ciphertext: str, key: str = None) -> str:
         """
         Entschlüsselt den eingegebenen Text mit dem Vigenere-Verfahren.
         Wenn kein Schlüssel angegebnm wird, wird der Property Schlüssel verwendet.
+
+        :param ciphertext: Der verschlüsselte Text, der entschlüsselt werden soll.
+        :param key: Der Schlüssel, der verwendet werden soll.
+
+        :return: Der entschlüsselte Text.
+
+        >>> vigenere = Vigenere(key="abc")
+        >>> vigenere.decrypt("hfnlpyosnd")
+        'helloworld'
+
+        >>> vigenere.decrypt("yprnehgmlq", key="cba")
+        'worldhello'
         """
 
-        ciphertext = Vigenere.to_lower_case_letter_only(ciphertext)
-        key = key if key else Vigenere.key
+        v = Vigenere()
+        ciphertext = v.to_lowercase_letter_only(ciphertext)
+        key = key if key else self.key
 
         alphabet = "abcdefghijklmnopqrstuvwxyz"
         plaintext = []
