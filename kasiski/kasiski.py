@@ -55,7 +55,8 @@ class Caesar:
         'zab'
         """
         alphabet = "abcdefghijklmnopqrstuvwxyz"
-        shift = alphabet.index(key.lower()) if key else alphabet.index(self.key)
+        shift = alphabet.index(
+            key.lower()) if key else alphabet.index(self.key)
         return "".join(alphabet[(alphabet.index(char) + shift) % 26] for char in plaintext)
 
     def decrypt(crypttext: str, key: str = None) -> str:
@@ -74,7 +75,8 @@ class Caesar:
         'hallo'
         """
         alphabet = "abcdefghijklmnopqrstuvwxyz"
-        shift = alphabet.index(key.lower()) if key else alphabet.index(self.key)
+        shift = alphabet.index(
+            key.lower()) if key else alphabet.index(self.key)
         return "".join(alphabet[(alphabet.index(char) - shift) % 26] for char in crypttext)
 
     def crack(crypttext: str, elements: int = 1) -> List[str]:
@@ -111,7 +113,57 @@ wir unsere armen Kinder ernähren da wir für uns selbst nichts mehr haben?"'
 
         probable_keys = []
         for frequent_letter in frequency_order:
-            shift = (alphabet.index(most_common_letter) - alphabet.index(frequent_letter)) % 26
+            shift = (alphabet.index(most_common_letter) -
+                     alphabet.index(frequent_letter)) % 26
             probable_keys.append(alphabet[shift])
 
         return probable_keys[:min(elements, 26)]
+
+
+class Vigenere:
+
+    def __init__(self, key: str) -> None:
+        """
+        Initialisiert den Caesar-Chiffre mit einem Schlüssel (key).
+
+        :param key: Der Verschiebewert für die Chiffrierung.
+        """
+        self.key = key
+
+    def to_lower_case_letter_only(plaintext: str) -> str:
+        """
+        Wandelt den plaintext in Kleinbuchstaben um und entfernt alle Zeichen,
+        die keine Kleinbuchstaben aus dem Bereich [a..z] sind.
+
+        :param plaintext: Der Eingabetext.
+        :return: Bereinigter Text nur mit Kleinbuchstaben von a-z.
+
+        >>> vigenere = Vigenere()
+        >>> Vigenere.to_lowercase_letter_only("Wandelt den plaintext in Kleinbuchstaben um und entfernt alle Zeichen, die keine Kleinbuchstaben aus dem Bereich [a..z] sind.")
+        'wandeltdenplaintextinkleinbuchstabenumundentferntallezeichendiekeinekleinbuchstabenausdembereichazsind'
+        """
+        return Caesar.to_lowercase_letter_only(plaintext)
+
+    def encrypt(plaintext: str, key: str = None) -> str:
+        """
+        Verschlüsselt den eingegebnen Text mit dem Vigenere-Verfahren.
+        Wenn kein Schlüssel angegeben wird, wird der Property Schlüssel verwedenet.
+        """
+        plaintext = Vigenere.to_lower_case_letter_only(plaintext)
+        key = key if key else Vigenere.key
+
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        ciphertext = []
+        key_index = 0
+
+        for char in plaintext
+            # Find the index of the current character in alphabet
+            char_index = alphabet.index(char)
+            key_char_index = alphabet.index(key[key_index % len(key)])
+
+            # Encrypt the character by shifting it based on the key
+            encrypted_char = alphabet[(char_index + key_char_index) % 26]
+            ciphertext.append(encrypted_char)
+            key_index += 1
+
+        return "".join(cipertext)
