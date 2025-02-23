@@ -433,3 +433,92 @@ class Kasiski:
         """
 
         return s[start::n]
+
+    def crack_key(self, length: int) -> str:
+        """
+        Bestimmt den wahrscheinlichsten Schlüssel mit gegebener Länge.
+
+        :param length: Die vermutete Länge des Schlüssels
+        :return: The most likely key.
+        """
+
+        substrings = ['' for _ in range(length)]
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        for i, char in enumerate(self.crypttext):
+            substrings[i % length] += char
+
+        key = []
+        for substring in substrings:
+            letter_counts = Counter(substring)
+            most_common_letter = letter_counts.most_common(1)[0][0]
+
+            shift = alphabet.index(most_common_letter) - alphabet.index('e')
+
+            shift = shift % 26
+
+            key.append(alphabet[shift])
+
+        return ''.join(key)
+
+
+
+if __name__ == "__main__":
+
+    message = """Ihr naht euch wieder, schwankende Gestalten,
+Die früh sich einst dem trüben Blick gezeigt.
+Versuch ich wohl, euch diesmal festzuhalten?
+Fühl ich mein Herz noch jenem Wahn geneigt?
+Ihr drängt euch zu! nun gut, so mögt ihr walten,
+Wie ihr aus Dunst und Nebel um mich steigt;
+Mein Busen fühlt sich jugendlich erschüttert
+Vom Zauberhauch, der euren Zug umwittert.
+
+Ihr bringt mit euch die Bilder froher Tage,
+Und manche liebe Schatten steigen auf;
+Gleich einer alten, halbverklungnen Sage
+Kommt erste Lieb und Freundschaft mit herauf;
+Der Schmerz wird neu, es wiederholt die Klage
+Des Lebens labyrinthisch irren Lauf,
+Und nennt die Guten, die, um schöne Stunden
+Vom Glück getäuscht, vor mir hinweggeschwunden.
+
+Sie hören nicht die folgenden Gesänge,
+Die Seelen, denen ich die ersten sang;
+Zerstoben ist das freundliche Gedränge,
+Verklungen, ach! der erste Widerklang.
+Mein Lied ertönt der unbekannten Menge,
+Ihr Beifall selbst macht meinem Herzen bang,
+Und was sich sonst an meinem Lied erfreuet,
+Wenn es noch lebt, irrt in der Welt zerstreuet.
+
+Und mich ergreift ein längst entwöhntes Sehnen
+Nach jenem stillen, ernsten Geisterreich,
+Es schwebet nun in unbestimmten Tönen
+Mein lispelnd Lied, der Äolsharfe gleich,
+Ein Schauer faßt mich, Träne folgt den Tränen,
+Das strenge Herz, es fühlt sich mild und weich;
+Was ich besitze, seh ich wie im Weiten,
+Und was verschwand, wird mir zu Wirklichkeiten."""
+
+    key = "abcd"
+    vigenere = Vigenere(key)
+    encrypted_message = vigenere.encrypt(message)
+    print("Verschlüsselter Text:", encrypted_message)
+
+    kasiski = Kasiski(encrypted_message)
+
+    probable_lengths = kasiski.dist_n_list(encrypted_message, 3)
+    print("Wahrscheinliche Schlüssel-Längen", probable_lengths)
+
+    if probable_lengths:
+        probable_key_length = probable_lengths[0]
+        print(f"Vermutete Schlüssel-Länge: {probable_key_length}")
+
+        cracked_key = kasiski.crack_key(probable_key_length)
+        print(f"Vermuteter Schlüssel: {cracked_key}")
+
+        decrypted_message = vigenere.decrypt(encrypted_message, cracked_key)
+        print("Entschlüsselter Text: ", decrypted_message)
+
+    else:
+        print("Konnte keine Schlüssel-Länge bestimmen.")
