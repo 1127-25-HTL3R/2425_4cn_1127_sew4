@@ -156,7 +156,7 @@ class Vigenere:
         ciphertext = []
         key_index = 0
 
-        for char in plaintext
+        for char in plaintext:
             # Find the index of the current character in alphabet
             char_index = alphabet.index(char)
             key_char_index = alphabet.index(key[key_index % len(key)])
@@ -167,3 +167,28 @@ class Vigenere:
             key_index += 1
 
         return "".join(cipertext)
+
+    def decrypt(ciphertext: str, key: str = None) -> str:
+        """
+        Entschlüsselt den eingegebenen Text mit dem Vigenere-Verfahren.
+        Wenn kein Schlüssel angegebnm wird, wird der Property Schlüssel verwendet.
+        """
+
+        ciphertext = Vigenere.to_lower_case_letter_only(ciphertext)
+        key = key if key else Vigenere.key
+
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        plaintext = []
+        key_index = 0
+
+        for char in ciphertext:
+            # Find the index of the current character in the alphabet
+            char_index = alphabet.index(char)
+            key_char_index = alphabet.index(key[key_index % len(key)])
+
+            # Decrypt the character by shifting it based on the key
+            decrypted_char = alphabet[(char_index - key_char_index) % 26]
+            plaintext.append(decrypted_char)
+            key_index += 1
+
+        return "".join(plaintext)
