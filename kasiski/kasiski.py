@@ -4,7 +4,7 @@ __email__ = "1127@htl.rennweg.at"
 __license__ = "GPLv2"
 
 import re
-from typing import List
+from typing import List, Set
 from collections import Counter
 
 
@@ -214,3 +214,72 @@ class Vigenere:
             key_index += 1
 
         return "".join(plaintext)
+
+class Kasiski:
+
+    def __init__(self, crypttext: str = "") -> None:
+        """
+        Initalisiert die Klasse mit dem gegebenen Text
+
+        :param crypttext: Der verschlüsselte Text.
+        """
+        self.crypttext = crypttext
+
+
+    def allpos(self, text: str, teilstring: str) -> List[int]:
+        """
+        Berechnet die Positionen von teilstring in text.
+
+        :param text: Der Text, in dem nach dem Teilstring gesucht wird.
+        :param teilstring: Der Teilstring, nach dem gesucht wird.
+        :return: Eine Liste der Startpositionen, an denen der Teilstring im Text gefunden wurde.
+
+        >>> k = Kasiski()
+        >>> k.allpos("heissajuchei, ein ei", "ei")
+        [1, 10, 14, 18]
+
+        >>> k.allpos("heissajuchei, ein ei", "hai")
+        []
+        """
+        positions = []
+        start = 0
+
+        while True:
+            # Suchen des Teilstrings ab der aktuellen Position
+            start = text.find(teilstring, start)
+
+            if start == -1:
+                break
+
+            positions.append(start)
+            start += 1
+
+        return positions
+
+    def alldist(self, text: str, teilstring: str) -> Set[int]:
+        """
+        Berechnet die Abstände zwischen allen Vorkommnissen des Teilstrings im verschlüsselten Text.
+
+        :param text: Der Text, in welchem die Abstände gesucht werden sollen.
+        :param teilstring: Der Teilstring, wo die Abstände zwischeneinander gezählt werden sollen.
+        :return: Ein Set mit den Abständen.
+
+        >>> k = Kasiski()
+        >>> k.alldist("heissajuchei, ein ei", "ei")
+        {4, 8, 9, 13, 17}
+        >>> k.alldist("heissajuchei, ein ei", "hai")
+        set()
+        """
+        positions = []
+
+        index = text.find(teilstring)
+        while index != -1:
+            positions.append(index)
+            index = text.find(teilstring, index + 1)
+
+        distances = set()
+        for i in range(len(positions)):
+            for j in range(i + 1, len(positions)):
+                distances.add(positions[j] - positions[i])
+
+        return distances
