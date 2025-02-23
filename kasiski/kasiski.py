@@ -324,3 +324,41 @@ class Kasiski:
                         distances.add((substring, positions[j] - positions[i]))
 
         return distances
+
+    def dist_n_list(self, text: str, laenge: int) -> List[int]:
+        """
+        Wie dist_n_tuple, liefert aber nur eine aufsteigend sortierte Liste der
+        Abstände ohne den Text zurück. In der Liste soll kein Element mehrfach
+        vorkommen.
+
+        >>> k = Kasiski()
+        >>> k.dist_n_list("heissajucheieinei", 2)
+        [2, 3, 5, 9, 11, 14]
+        >>> k.dist_n_list("heissahucheieinei", 3)
+        [9]
+        >>> k.dist_n_list("heissajucheieinei", 4)
+        []
+        """
+        substring_positions = {}
+
+        # Durchlaufe den Text und extrahiere alle Teilstrings der angegebenen Länge
+        for i in range(len(text) - laenge + 1):
+            substring = text[i:i + laenge]
+
+            # Füge die Position des Teilstrings zur Liste der Positionen hinzu
+            if substring not in substring_positions:
+                substring_positions[substring] = []
+            substring_positions[substring].append(i)
+
+        # Berechne die Abstände und füge sie zu einer Menge hinzu (damit keine Duplikate entstehen)
+        distances = set()
+
+        for positions in substring_positions.values():
+            if len(positions) > 1:
+                # Berechne die Abstände zwischen allen Positionen
+                for i in range(len(positions)):
+                    for j in range(i + 1, len(positions)):
+                        distances.add(positions[j] - positions[i])
+
+        # Sortiere die Abstände und gebe sie als Liste zurück
+        return sorted(distances)
