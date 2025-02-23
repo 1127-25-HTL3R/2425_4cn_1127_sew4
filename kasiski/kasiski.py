@@ -7,7 +7,7 @@ import re
 
 
 class Caesar:
-    def __init__(self, key: int = 3) -> None:
+    def __init__(self, key: str) -> None:
         """
         Initialisiert den Caesar-Chiffre mit einem Schlüssel (key).
 
@@ -27,6 +27,7 @@ class Caesar:
         >>> caesar.to_lowercase_letter_only("Wandelt den plaintext in Kleinbuchstaben um und entfernt alle Zeichen, die keine Kleinbuchstaben aus dem Bereich [a..z] sind.")
         'wandeltdenplaintextinkleinbuchstabenumundentferntallezeichendiekeinekleinbuchstabenausdembereichazsind'
         """
+        return "".join(re.findall(r'[a-z]', plaintext.lower()))
 
     def encrypt(plaintext: str, key: str = None) -> str:
         """
