@@ -291,6 +291,11 @@ class Kasiski:
         liefert ein Set mit den Abständen aller Wiederholunghen der Teilstrings
         in text.
 
+        :param text: Der zu analysierende Text.
+        :param laenge: Die Länge der Teilstrings, deren Abstände berechnet werden sollen.
+
+        :return: Ein Tupel der Abstände zwischen den Teilstrings.
+
         >>> k = Kasiski()
         >>> k.dist_n_tuple("heissajuchei", 2) == {('ei', 9), ('he', 9)}
         True
@@ -331,6 +336,11 @@ class Kasiski:
         Abstände ohne den Text zurück. In der Liste soll kein Element mehrfach
         vorkommen.
 
+        :param text: Der zu analysierende Text.
+        :param laenge: Die Länge der Teilstrings, deren Abstände berechnet werden sollen.
+
+        :return: Eine aufsteigend sortierte Liste der Abstände zwischen den Teilstrings.
+
         >>> k = Kasiski()
         >>> k.dist_n_list("heissajucheieinei", 2)
         [2, 3, 5, 9, 11, 14]
@@ -362,3 +372,47 @@ class Kasiski:
 
         # Sortiere die Abstände und gebe sie als Liste zurück
         return sorted(distances)
+
+    def ggt(self, x: int, y: int) -> int:
+        """
+        Ermittelt den größten gemeinsamen Teiler von x und y.
+
+        :param x: Die erste Zahl.
+        :param y: Die zweite Zahl.
+
+        :return: Der größte gemeinsame Teiler von x und y.
+
+        >>> k = Kasiski()
+        >>> k.ggt(10, 25)
+        5
+        >>> k.ggt(18, 24)
+        6
+        """
+        while y != 0:
+            x, y = y, x % y
+        return x
+
+    def ggt_count(self, zahlen: List[int]) -> Counter:
+        """
+        Bestimmt die Häufigkeit der paarsweisen ggt aller Zahlen aus list.
+
+        :param zahlen: Eine Liste von ganzen Zahlen.
+        :return: Ein Counter-Objekt, das die Häufigkeit der berechneten GGT-Werte speichert.
+
+        >>> k = Kasiski()
+        >>> k.ggt_count([12, 14, 16]) == Counter({2: 2, 12: 1, 4: 1, 14: 1, 16: 1})
+        True
+        >>> k.ggt_count([10, 25, 50, 100]) == Counter({10: 3, 25: 3, 50: 2, 5: 1, 100: 1})
+        True
+        """
+        ggt_counter = Counter()
+
+        for zahl in zahlen:
+            ggt_counter[zahl] += 1
+
+        for i in range(len(zahlen)):
+            for j in range(i + 1, len(zahlen)):
+                ggt_wert = self.ggt(zahlen[i], zahlen[j])
+                ggt_counter[ggt_wert] += 1
+
+        return ggt_counter
