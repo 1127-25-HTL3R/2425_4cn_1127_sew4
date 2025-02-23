@@ -416,3 +416,20 @@ class Kasiski:
                 ggt_counter[ggt_wert] += 1
 
         return ggt_counter
+
+    def get_nth_letter(self, s: str, start: int, n: int) -> str:
+        """
+        Extrahiert aus s jeden n-ten Buchstaben beginnend mit index start.
+
+        :param s: Der Eingabestring, aus dem Buchstaben extrahiert werden sollen.
+        :param start: Der Startindex für die Extraktion.
+        :param n: Das Intervall für die Extraktion
+
+        :return: Ein String mit den extrahierten Buchstaben.
+
+        >>> k = Kasiski()
+        >>> k.get_nth_letter("Das ist kein kreativer Test.", 1, 4)
+        'asektrs'
+        """
+
+        return s[start::n]
