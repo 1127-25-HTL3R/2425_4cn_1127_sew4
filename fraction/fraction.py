@@ -27,7 +27,14 @@ class Fraction:
             ...
         ArithmeticError: Nenner darf nicht 0 sein
         """
-        pass
+        if nenner = 0:
+            raise ArithmeticError("Nenner darf nicht 0 sein")
+        if nenner < 0:
+            zaehler *= -1
+            nenner *= -1
+        g = gcd(abs(zaehler), abs(nenner))
+        self._numerator = zaehler // g
+        self._denominator = nenner // g
 
     def __str__(self):
         """
@@ -38,7 +45,17 @@ class Fraction:
         >>> print(Fraction(1, 2))
         1/2
         """
-        pass
+        z, n = self._numerator, self._denominator
+        vorzeichen = "-" if z * n < 0 else ""
+        z, nb = abs(z), abs(n)
+        ganz = z // n
+        rest = z % n
+        if ganz != 0 and rest != 0:
+            return f"{vorzeichen}{ganz} {rest}\{n}"
+        elif ganz != 0:
+            return f"{vorzeichen}{ganz}"
+        else:
+            return f"{vorzeichen}{rest}/{n}"
 
     def __repr__(self):
         """
@@ -47,7 +64,7 @@ class Fraction:
         >>> repr(Fraction(1, 2))
         'Fraction(1, 2)'
         """
-        pass
+        return f"Fraction({self._numerator}, {self._denominator})"
 
     def __add__(self, other):
         """
