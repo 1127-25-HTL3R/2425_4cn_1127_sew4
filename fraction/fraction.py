@@ -75,7 +75,13 @@ class Fraction:
         >>> Fraction(1, 2) + 1
         Fraction(3, 2)
         """
-        pass
+        if isinstance(other, int):
+            other = Fraction(other)
+        if isinstance(other, Fraction):
+            z = self._numerator * other._denominator + other._numerator * self._denominator
+            n = self._denominator * other._denominator
+            return Fraction(z, n)
+        return NotImplemented
 
     def __radd__(self, other):
         """
@@ -84,7 +90,7 @@ class Fraction:
         >>> 1 + Fraction(1, 2)
         Fraction(3, 2)
         """
-        pass
+        return self + other
 
     def __sub__(self, other):
         """
@@ -93,7 +99,13 @@ class Fraction:
         >>> Fraction(3, 4) - Fraction(1, 2)
         Fraction(1, 4)
         """
-        pass
+        if isinstance(other, int):
+            other = Fraction(other)
+        if isinstance(other, Fraction):
+            z = self._numerator * other._denominator - other._numerator * self._denominator
+            n = self._denominator * other._denominator
+            return Fraction(z, n)
+        return NotImplemented
 
     def __rsub__(self, other):
         """
@@ -102,7 +114,7 @@ class Fraction:
         >>> 1 - Fraction(1, 4)
         Fraction(3, 4)
         """
-        pass
+        return Fraction(other) - self
 
     def __mul__(self, other):
         """
