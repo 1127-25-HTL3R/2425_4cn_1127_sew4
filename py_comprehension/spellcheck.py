@@ -48,7 +48,6 @@ def edit1(wort: str) -> Set[str]:
     return set(deletes | transposes | replaces | inserts)
 
 
-
 def edit1_good(wort: str, alle_woerter: List[str]) -> Set[str]:
     """
     Ruft edit1(wort) auf und liefert nur die richtigen Wörter, welche auch im
@@ -63,7 +62,6 @@ def edit1_good(wort: str, alle_woerter: List[str]) -> Set[str]:
     return {w for w in edit1(wort) if w in alle_woerter}
 
 
-
 def edit2_good(wort: str, alle_woerter: List[str]) -> Set[str]:
     """
     Bestimmt Wörter mit Edit-Distanz zwei.
@@ -74,7 +72,7 @@ def edit2_good(wort: str, alle_woerter: List[str]) -> Set[str]:
     :return: Die Möglichkeiten, wie das Wort korrigiert werden könnte.
     """
 
-    print("Placeholder")
+    return {e2 for e1 in edit1(wort) for e2 in edit1(e1) if e2 in alle_woerter}
 
 
 def correct(word: str, alle_woerter: List[str]) -> Set[str]:
@@ -87,7 +85,10 @@ def correct(word: str, alle_woerter: List[str]) -> Set[str]:
     :return: Die Möglichkeiten, wie das Wort korrigiert werden könnte.
     """
 
-    print("Placeholder")
+    word = word.lower()
+    if word in alle_woerter:
+        return {word}
+    return edit1_good(word, alle_woerter) or edit2_good(word, alle_woerter)
 
 
 if __name__ == "__main__":
@@ -99,5 +100,4 @@ if __name__ == "__main__":
                                                     'suppe', 'ursuppe'])
     assert (sorted(correct("Alsupe", woerter)) == ['aalsuppe', 'absude',
                                                    'alse', 'lupe'])
-
     print("Evertyhing worked!")
