@@ -169,7 +169,7 @@ class Fraction:
         >>> Fraction(5, 3) // Fraction(1, 2)
         Fraction(3, 1)
         """
-        restult = self /other
+        result = self / other
         return Fraction(result._numerator // result._demoninator, 1)
 
     def __rfloordiv__(self, other):
@@ -188,7 +188,12 @@ class Fraction:
         >>> Fraction(1, 2) == Fraction(2, 4)
         True
         """
-        pass
+        if isinstance(other, int):
+            other = Fraction(other)
+        if isinstance(other, Fraction):
+            return (self._numerator == other._numerator) and self._denominator == other._denominator)
+        return NotImplemented
+
 
     def __lt__(self, other):
         """
@@ -197,7 +202,12 @@ class Fraction:
         >>> Fraction(1, 3) < Fraction(1, 2)
         True
         """
-        pass
+        if isinstance(other, int):
+            other = Fraction(other)
+        if isinstance(other, Fraction):
+            return self._numerator * other._denominator < other._numerator * self._denominator
+        return NotImplemented
+
 
     def __float__(self):
         """
@@ -206,7 +216,7 @@ class Fraction:
         >>> float(Fraction(1, 4))
         0.25
         """
-        pass
+        return self._numerator / self._denominator
 
     @property
     def numerator(self):
@@ -216,7 +226,8 @@ class Fraction:
         >>> Fraction(3, 4).numerator
         3
         """
-        pass
+        return self._numerator
+
 
     @property
     def denominator(self):
@@ -226,4 +237,4 @@ class Fraction:
         >>> Fraction(3, 4).denominator
         4
         """
-        pass
+        return self._denominator
