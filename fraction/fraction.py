@@ -1,0 +1,189 @@
+__author__ = "Felix Friesenbichler"
+__license__ = "GPLv2"
+__email__ = "1127@htl.rennweg.at"
+
+from math import gcd
+
+class Fraction:
+    """Klasse für Bruchzahlen.
+
+    >>> f1 = Fraction(1, 2)
+    >>> f1  # __repr__
+    Fraction(1, 2)
+    >>> print(f1)  # __str__
+    1/2
+    """
+
+    def __init__(self, zaehler=0, nenner=1):
+        """
+        Initialisiert eine Bruchzahl mit Zähler und Nenner.
+
+        >>> Fraction(3)
+        Fraction(3, 1)
+        >>> Fraction(3, 4)
+        Fraction(3, 4)
+        >>> Fraction(1, 0)
+        Traceback (most recent call last):
+            ...
+        ArithmeticError: Nenner darf nicht 0 sein
+        """
+        pass
+
+    def __str__(self):
+        """
+        Gibt den Bruch als lesbaren String zurück (z.B. 1 2/3).
+
+        >>> print(Fraction(5, 3))
+        1 2/3
+        >>> print(Fraction(1, 2))
+        1/2
+        """
+        pass
+
+    def __repr__(self):
+        """
+        Gibt die offizielle Darstellung zurück, sodass eval(repr(x)) == x möglich ist.
+
+        >>> repr(Fraction(1, 2))
+        'Fraction(1, 2)'
+        """
+        pass
+
+    def __add__(self, other):
+        """
+        Addiert zwei Brüche.
+
+        >>> Fraction(1, 2) + Fraction(1, 4)
+        Fraction(3, 4)
+        >>> Fraction(1, 2) + 1
+        Fraction(3, 2)
+        """
+        pass
+
+    def __radd__(self, other):
+        """
+        Ermöglicht Addition mit int auf der linken Seite.
+
+        >>> 1 + Fraction(1, 2)
+        Fraction(3, 2)
+        """
+        pass
+
+    def __sub__(self, other):
+        """
+        Subtrahiert zwei Brüche.
+
+        >>> Fraction(3, 4) - Fraction(1, 2)
+        Fraction(1, 4)
+        """
+        pass
+
+    def __rsub__(self, other):
+        """
+        Ermöglicht Subtraktion mit int auf der linken Seite.
+
+        >>> 1 - Fraction(1, 4)
+        Fraction(3, 4)
+        """
+        pass
+
+    def __mul__(self, other):
+        """
+        Multipliziert zwei Brüche.
+
+        >>> Fraction(2, 3) * Fraction(3, 4)
+        Fraction(1, 2)
+        """
+        pass
+
+    def __rmul__(self, other):
+        """
+        Ermöglicht Multiplikation mit int auf der linken Seite.
+
+        >>> 2 * Fraction(1, 2)
+        Fraction(1, 1)
+        """
+        pass
+
+    def __truediv__(self, other):
+        """
+        Dividiert zwei Brüche.
+
+        >>> Fraction(1, 2) / Fraction(1, 4)
+        Fraction(2, 1)
+        """
+        pass
+
+    def __rtruediv__(self, other):
+        """
+        Ermöglicht Division mit int auf der linken Seite.
+
+        >>> 1 / Fraction(1, 2)
+        Fraction(2, 1)
+        """
+        pass
+
+    def __floordiv__(self, other):
+        """
+        Ganzzahlige Division zweier Brüche.
+
+        >>> Fraction(5, 3) // Fraction(1, 2)
+        Fraction(3, 1)
+        """
+        pass
+
+    def __rfloordiv__(self, other):
+        """
+        Ermöglicht ganzzahlige Division mit int auf der linken Seite.
+
+        >>> 2 // Fraction(1, 2)
+        Fraction(4, 1)
+        """
+        pass
+
+    def __eq__(self, other):
+        """
+        Prüft, ob zwei Brüche gleich sind.
+
+        >>> Fraction(1, 2) == Fraction(2, 4)
+        True
+        """
+        pass
+
+    def __lt__(self, other):
+        """
+        Vergleicht zwei Brüche (kleiner als).
+
+        >>> Fraction(1, 3) < Fraction(1, 2)
+        True
+        """
+        pass
+
+    def __float__(self):
+        """
+        Wandelt den Bruch in eine Fließkommazahl um.
+
+        >>> float(Fraction(1, 4))
+        0.25
+        """
+        pass
+
+    @property
+    def numerator(self):
+        """
+        Gibt den Zähler zurück.
+
+        >>> Fraction(3, 4).numerator
+        3
+        """
+        pass
+
+    @property
+    def denominator(self):
+        """
+        Gibt den Nenner zurück.
+
+        >>> Fraction(3, 4).denominator
+        4
+        """
+        pass
