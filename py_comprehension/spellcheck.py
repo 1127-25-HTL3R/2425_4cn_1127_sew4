@@ -39,7 +39,14 @@ def edit1(wort: str) -> Set[str]:
     :return: Die Möglichkeiten, wie das Wort korrigiert werden könnte.
     """
 
-    print("Placeholder")
+    letters = 'abcdefghijklmnopqrstuvwxyzäöüß'
+    splits = split_word(wort)
+    deletes = {L + R[1:] for L, R in splits if R}
+    transposes = {L + R[1] + R[0] + R[2:] for L, R in splits if len(R) > 1}
+    replaces = {L + c + R[1:] for L, R in splits if R for c in letters}
+    inserts = {L + c + R for L, R in splits for c in letters}
+    return set(deletes | transposes | replaces | inserts)
+
 
 
 def edit1_good(wort: str, alle_woerter: List[str]) -> Set[str]:
@@ -53,7 +60,8 @@ def edit1_good(wort: str, alle_woerter: List[str]) -> Set[str]:
     :return: Die Möglichkeiten, wie das Wort korrigiert werden könnte.
     """
 
-    print("Placeholder")
+    return {w for w in edit1(wort) if w in alle_woerter}
+
 
 
 def edit2_good(wort: str, alle_woerter: List[str]) -> Set[str]:
