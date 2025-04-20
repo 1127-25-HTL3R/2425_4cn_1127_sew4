@@ -12,8 +12,8 @@ def read_all_words(filename: str) -> Set[str]:
     :param filename: Die Datei, die eingelesen werden soll.
     :return: Das Set, welches alle Wörter der Datei enthält.
     """
-
-    print("Placeholder")
+    with open(filename, "r", encoding="utf-8") as f:
+        return {line.strip().lower() for line in f if line.strip()}
 
 
 def split_word(wort: str) -> List[Tuple[str, str]]:
@@ -27,8 +27,7 @@ def split_word(wort: str) -> List[Tuple[str, str]]:
     >>> split_word("abc")
     [ ("", "abc"), ("a", "bc"), ("ab", "c"), ("abc", "") ]
     """
-
-    print("Placeholder")
+    return [(wort[:i], wort[i:]) for i in range(len(wort) + 1)]
 
 
 def edit1(wort: str) -> Set[str]:
