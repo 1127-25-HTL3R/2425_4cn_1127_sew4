@@ -123,7 +123,11 @@ class Fraction:
         >>> Fraction(2, 3) * Fraction(3, 4)
         Fraction(1, 2)
         """
-        pass
+        if isinstance(other, int):
+            other = Fraction(other)
+        if isinstance(other, Fraction):
+            return Fraction(self._numerator * other._numerator, self._denominator * other._denominator)
+        return NotImplemented
 
     def __rmul__(self, other):
         """
@@ -132,7 +136,7 @@ class Fraction:
         >>> 2 * Fraction(1, 2)
         Fraction(1, 1)
         """
-        pass
+        return self * other
 
     def __truediv__(self, other):
         """
@@ -141,7 +145,13 @@ class Fraction:
         >>> Fraction(1, 2) / Fraction(1, 4)
         Fraction(2, 1)
         """
-        pass
+        if isinstance(other, int):
+            other = Fraction(other)
+        if isinstance(other, Fraction):
+            if other._numerator == 0:
+                raise ArithmeticError("Division durch Null")
+            return Fraction(self._numerator * other._denominator, self._denominator * other._numerator)
+        return NotImplemented
 
     def __rtruediv__(self, other):
         """
@@ -150,7 +160,7 @@ class Fraction:
         >>> 1 / Fraction(1, 2)
         Fraction(2, 1)
         """
-        pass
+        return Fraction(other) / self
 
     def __floordiv__(self, other):
         """
@@ -159,7 +169,8 @@ class Fraction:
         >>> Fraction(5, 3) // Fraction(1, 2)
         Fraction(3, 1)
         """
-        pass
+        restult = self /other
+        return Fraction(result._numerator // result._demoninator, 1)
 
     def __rfloordiv__(self, other):
         """
@@ -168,7 +179,7 @@ class Fraction:
         >>> 2 // Fraction(1, 2)
         Fraction(4, 1)
         """
-        pass
+        return Fraction(other) // self
 
     def __eq__(self, other):
         """
