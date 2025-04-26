@@ -20,14 +20,16 @@ class Fraction:
 
         >>> Fraction(3)
         Fraction(3, 1)
+
         >>> Fraction(3, 4)
         Fraction(3, 4)
+
         >>> Fraction(1, 0)
         Traceback (most recent call last):
             ...
         ArithmeticError: Nenner darf nicht 0 sein
         """
-        if nenner = 0:
+        if nenner == 0:
             raise ArithmeticError("Nenner darf nicht 0 sein")
         if nenner < 0:
             zaehler *= -1
@@ -44,6 +46,16 @@ class Fraction:
         1 2/3
         >>> print(Fraction(1, 2))
         1/2
+        >>> str(Fraction(3, 2))
+        '1 1/2'
+        >>> str(Fraction(7, 3))
+        '2 1/3'
+        >>> str(Fraction(4, 1))
+        '4'
+        >>> str(Fraction(-5, 3))
+        '-1 2/3'
+        >>> str(Fraction(-3, 1))
+        '-3'
         """
         z, n = self._numerator, self._denominator
         vorzeichen = "-" if z * n < 0 else ""
@@ -51,7 +63,7 @@ class Fraction:
         ganz = z // n
         rest = z % n
         if ganz != 0 and rest != 0:
-            return f"{vorzeichen}{ganz} {rest}\{n}"
+            return f"{vorzeichen}{ganz} {rest}/{n}"
         elif ganz != 0:
             return f"{vorzeichen}{ganz}"
         else:
@@ -63,6 +75,16 @@ class Fraction:
 
         >>> repr(Fraction(1, 2))
         'Fraction(1, 2)'
+        >>> repr(Fraction(3, 4))
+        'Fraction(3, 4)'
+        >>> repr(Fraction(0, 5))
+        'Fraction(0, 1)'
+        >>> repr(Fraction(-6, 8))
+        'Fraction(-3, 4)'
+        >>> eval(repr(Fraction(5, 6)))
+        Fraction(5, 6)
+        >>> repr(Fraction(10, -2))
+        'Fraction(-5, 1)'
         """
         return f"Fraction({self._numerator}, {self._denominator})"
 
@@ -72,8 +94,24 @@ class Fraction:
 
         >>> Fraction(1, 2) + Fraction(1, 4)
         Fraction(3, 4)
+
         >>> Fraction(1, 2) + 1
         Fraction(3, 2)
+
+        >>> Fraction(1, 3) + Fraction(1, 6)
+        Fraction(1, 2)
+
+        >>> Fraction(-1, 2) + Fraction(1, 2)
+        Fraction(0, 1)
+
+        >>> Fraction(3, 4) + Fraction(1, 4)
+        Fraction(1, 1)
+
+        >>> Fraction(1, 3) + 2
+        Fraction(7, 3)
+
+        >>> Fraction(-1, 2) + 1
+        Fraction(1, 2)
         """
         if isinstance(other, int):
             other = Fraction(other)
@@ -170,7 +208,7 @@ class Fraction:
         Fraction(3, 1)
         """
         result = self / other
-        return Fraction(result._numerator // result._demoninator, 1)
+        return Fraction(result._numerator // result._denominator, 1)
 
     def __rfloordiv__(self, other):
         """
@@ -191,7 +229,7 @@ class Fraction:
         if isinstance(other, int):
             other = Fraction(other)
         if isinstance(other, Fraction):
-            return (self._numerator == other._numerator) and self._denominator == other._denominator)
+            return (self._numerator == other._numerator) and (self._denominator == other._denominator)
         return NotImplemented
 
 
